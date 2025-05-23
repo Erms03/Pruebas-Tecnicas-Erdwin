@@ -6,17 +6,22 @@ const UserForm = () => {
     name: "",
     email: "",
   });
-  const [submittedData, setSubmittedData] = useState(null);
   const [isOpenModal, setIsOpenModal] = useState(false);
+  const [users, setUsers] = useState([]);
+  const [error, setError] = useState("");
 
+  //Eventos para manejar la accion del modal
   const handleAddClick = () => {
     setIsOpenModal(true);
   };
-
   const handleCancelButton = () => {
     setIsOpenModal(false);
   };
+  const handleDeleteClick = (index) => {
+    setUsers((prev) => [...prev].filter((_, i) => i !== index));
+  };
 
+  //Se guarda en un estado los cambios de los campos del formulario
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -29,9 +34,27 @@ const UserForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const newUser = dataForm;
-    setSubmittedData(newUser);
+    //Validaciones del formulario
+    if (!dataForm.name || !dataForm.email) {
+      setError("Todos los campos son obligatorios");
+      return;
+    }
 
+    if (!/^\S+@\S+\.\S+$/.test(dataForm.email)) {
+      setError("Por favor ingrese un email válido");
+      return;
+    }
+
+    if (users.some((user) => user.email === dataForm.email)) {
+      setError("Este email ya está registrado");
+      return;
+    }
+
+    //Se guarda el nuevo usuario en el array usuario
+    const newUser = dataForm;
+    setUsers([...users, newUser]);
+
+    //Se resetea el formulario
     setDataForm({
       name: "",
       email: "",
@@ -46,7 +69,6 @@ const UserForm = () => {
         <h1>Formulario React</h1>
         <button onClick={handleAddClick}>Annadir</button>
       </div>
-
       {isOpenModal && (
         <>
           <div className="background-modal" />
@@ -74,8 +96,12 @@ const UserForm = () => {
                   required
                 />
               </div>
+              {error && <p className="error">{error}</p>}
+
               <div className="buttons-form">
-                <button onClick={handleAddClick}>Aceptar</button>
+                <button type="submit" onClick={handleAddClick}>
+                  Aceptar
+                </button>
                 <button onClick={handleCancelButton}>Cancelar</button>
               </div>
             </form>
@@ -83,12 +109,21 @@ const UserForm = () => {
         </>
       )}
 
-      {submittedData && (
-        <div className="show-user">
-          <p>Nombre: {submittedData.name}</p>
-          <p>Email: {submittedData.email}</p>
-        </div>
-      )}
+      {users &&
+        users.map((user, index) => (
+          <div className="user-card" key={user.email}>
+            <div className="show-user">
+              <p>Nombre: {user.name}</p>
+              <p>Email: {user.email}</p>
+            </div>
+            <div
+              className="delete-button"
+              onClick={() => handleDeleteClick(index)}
+            >
+              Borrar
+            </div>
+          </div>
+        ))}
     </section>
   );
 };

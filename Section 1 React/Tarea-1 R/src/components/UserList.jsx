@@ -20,7 +20,7 @@ export const UserList = ({ users }) => {
         setSortedUsers([...users].sort((a, b) => a.name.localeCompare(b.name)));
         return;
       case "edad":
-        setSortedUsers([...users].sort((a, b) => a.age.localeCompare(b.age)));
+        setSortedUsers([...users].sort((a, b) => a.age - b.age));
         return;
     }
   }, [sortBy]);

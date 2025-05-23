@@ -6,27 +6,31 @@ const App = () => {
   const users = [
     {
       name: "Pedro",
-      age: "50",
+      age: 50,
     },
     {
       name: "Vivian",
-      age: "26",
+      age: 26,
     },
     {
       name: "Ernesto",
-      age: "69",
+      age: 69,
     },
     {
       name: "Alejandro",
-      age: "18",
+      age: 18,
     },
     {
       name: "Juan",
-      age: "32",
+      age: 32,
     },
     {
       name: "Miguel",
-      age: "20",
+      age: 20,
+    },
+    {
+      name: "Zoilan",
+      age: 5,
     },
   ];
   return (
