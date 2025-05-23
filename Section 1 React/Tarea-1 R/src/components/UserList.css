@@ -1,0 +1,8 @@
+.user-list {
+  display: flex;
+  gap: 10px;
+}
+.sort{
+  display: flex;
+  gap:10px
+}
